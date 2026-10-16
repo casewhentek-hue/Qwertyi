@@ -1,0 +1,682 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Jai Gautham</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700&family=Noto+Sans+Telugu:wght@700;800&display=swap">
+<script>
+document.documentElement.classList.add('js', 'intro');
+setTimeout(function () {
+  if (!window.__gx) {
+    document.documentElement.classList.remove('intro');
+    document.documentElement.classList.add('nogl');
+  }
+}, 9000);
+</script>
+<style>
+/* Layout concept: a fixed WebGL tunnel of gold rings sits behind everything; angular cut-corner panels scroll over it while the camera flies down the tunnel toward a saffron sun. A one-time cinematic intro opens the page. */
+:root {
+  --bg: #0a0605;
+  --ink: #f4e8d0;
+  --ink-dim: #c9b392;
+  --gold: #f2b53a;
+  --saffron: #ff7a1a;
+  --crimson: #b3121f;
+  --panel: rgba(16, 9, 6, 0.74);
+  --line: rgba(242, 181, 58, 0.28);
+  --font-display: 'Alfa Slab One', 'Rockwell', Georgia, serif;
+  --font-body: 'Barlow', 'Segoe UI', system-ui, sans-serif;
+  --font-label: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+  --font-telugu: 'Noto Sans Telugu', 'Nirmala UI', sans-serif;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { background: var(--bg); scroll-behavior: smooth; }
+html.intro, html.intro body { overflow: hidden; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 400 17px/1.6 var(--font-body);
+  padding-block: 0;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+
+#gl { position: fixed; inset: 0; width: 100%; height: 100%; display: block; z-index: 0; }
+#flash { position: fixed; inset: 0; z-index: 60; background: #fff4d6; opacity: 0; pointer-events: none; }
+
+html.intro main, html.intro footer, html.intro .bar { visibility: hidden; }
+main, footer { position: relative; z-index: 2; }
+
+/* Intro overlay */
+#intro { position: fixed; inset: 0; z-index: 50; pointer-events: none; }
+html:not(.intro) #intro { display: none; }
+.kicker {
+  position: absolute; left: 0; right: 0; top: 46%;
+  text-align: center;
+  font: 700 clamp(15px, 3.4vw, 22px)/1.4 var(--font-label);
+  letter-spacing: 0.5em; text-transform: uppercase; color: var(--gold);
+  opacity: 0; transition: opacity 0.9s ease; padding-inline: 16px;
+}
+.kicker.on { opacity: 1; }
+.skip, .enter {
+  position: absolute; pointer-events: none; opacity: 0;
+  font: 700 16px/1 var(--font-label); letter-spacing: 0.28em; text-transform: uppercase;
+  color: var(--ink); background: transparent; border: 1px solid var(--line);
+  padding: 12px 18px; cursor: pointer; transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.skip { top: calc(18px + env(safe-area-inset-top, 0px)); right: max(16px, env(safe-area-inset-right, 0px)); opacity: 1; pointer-events: auto; }
+.enter {
+  left: 50%; bottom: calc(9% + env(safe-area-inset-bottom, 0px));
+  transform: translate(-50%, 16px);
+  font-size: 20px; padding: 18px 34px; color: #1a0803;
+  background: linear-gradient(180deg, #ffd978, #f2a21f 60%, #c9650e);
+  border: 0;
+  clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+}
+.ready .enter { opacity: 1; pointer-events: auto; transform: translate(-50%, 0); }
+.ready .skip { opacity: 0; pointer-events: none; }
+
+/* Header */
+.bar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 20;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: calc(14px + env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) 14px max(16px, env(safe-area-inset-left, 0px));
+  background: linear-gradient(rgba(10, 6, 5, 0.85), rgba(10, 6, 5, 0));
+}
+.mark { font: 400 20px/1 var(--font-display); letter-spacing: 0.06em; color: var(--gold); text-decoration: none; text-transform: uppercase; }
+.bar nav { display: flex; gap: 22px; }
+.bar nav a {
+  font: 700 16px/1 var(--font-label); letter-spacing: 0.2em; text-transform: uppercase;
+  text-decoration: none; color: var(--ink-dim); padding: 8px 0;
+}
+.bar nav a:hover { color: var(--gold); }
+@media (max-width: 600px) { .bar nav a:not(.keep) { display: none; } }
+
+/* Hero */
+.name-h1 {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap; margin: 0;
+}
+html.nogl .name-h1 {
+  position: static; width: auto; height: auto; clip: auto; overflow: visible;
+  font: 400 clamp(56px, 16vw, 180px)/1 var(--font-display); color: var(--gold);
+  text-transform: uppercase; text-shadow: 0 6px 0 #6b2308, 0 0 40px rgba(255, 122, 26, 0.4);
+}
+.hero {
+  max-width: 1100px; margin-inline: auto;
+  min-height: 100vh; min-height: 100svh;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding-block: 96px 56px;
+}
+.hero-copy { max-width: 560px; display: flex; flex-direction: column; gap: 14px; align-items: flex-start; }
+.eyebrow { margin: 0; font: 700 18px/1 var(--font-label); letter-spacing: 0.34em; text-transform: uppercase; color: var(--saffron); }
+.lede { margin: 0; font-size: clamp(18px, 2.4vw, 22px); color: var(--ink); text-shadow: 0 2px 12px rgba(0, 0, 0, 0.8); }
+.cue { font: 700 15px/1 var(--font-label); letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); text-decoration: none; padding: 10px 0; }
+.cue:hover { color: var(--ink); }
+
+/* Sections and panels */
+section.block { max-width: 1100px; margin-inline: auto; padding-block: clamp(64px, 12vw, 150px); }
+.panel {
+  background: var(--panel);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  padding: clamp(22px, 4vw, 48px);
+  clip-path: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 22px 100%, 0 calc(100% - 22px));
+}
+h2 {
+  margin: 0 0 10px; font: 400 clamp(34px, 6.4vw, 70px)/1.02 var(--font-display);
+  color: var(--gold); text-transform: uppercase; text-wrap: balance;
+  text-shadow: 0 3px 0 #6b2308, 0 0 32px rgba(255, 122, 26, 0.35);
+}
+.sub { margin: 0 0 30px; max-width: 52ch; color: var(--ink-dim); }
+h3 { margin: 0 0 8px; font: 700 26px/1.1 var(--font-label); letter-spacing: 0.06em; text-transform: uppercase; color: var(--gold); }
+
+.rules { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 28px 36px; }
+.rules p { margin: 0; color: var(--ink); max-width: 36ch; }
+
+.moments-head { padding: 0 0 28px; }
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 22px; }
+.card {
+  min-width: 0; background: var(--panel);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  padding: 26px 24px 22px;
+  display: flex; flex-direction: column; gap: 10px;
+  clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px));
+  transform: perspective(800px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform 0.18s ease-out;
+}
+.card .tag { font: 700 14px/1 var(--font-label); letter-spacing: 0.3em; text-transform: uppercase; color: var(--saffron); }
+.card h3 { font: 400 24px/1.12 var(--font-display); letter-spacing: 0; text-transform: none; color: var(--ink); margin: 0; }
+.card p { margin: 0; color: var(--ink-dim); font-size: 16px; }
+.card .meter { margin-top: auto; padding-top: 14px; border-top: 1px solid var(--line); font: 700 15px/1.2 var(--font-label); letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); display: flex; justify-content: space-between; gap: 10px; }
+.card .meter span:last-child { color: var(--ink); text-align: right; }
+
+.roar-grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 36px; align-items: center; }
+@media (max-width: 760px) { .roar-grid { grid-template-columns: minmax(0, 1fr); } }
+.roar-side { display: flex; flex-direction: column; align-items: flex-start; gap: 18px; }
+.roar-btn {
+  width: clamp(150px, 34vw, 210px); aspect-ratio: 1; max-width: 100%; border: 0; border-radius: 50%; cursor: pointer;
+  font: 400 clamp(30px, 6vw, 44px)/1 var(--font-display); letter-spacing: 0.04em; color: #fff3d2;
+  background: radial-gradient(circle at 50% 35%, #ffb347 0%, #ff7a1a 38%, #b3121f 82%);
+  box-shadow: 0 0 0 6px rgba(242, 181, 58, 0.18), 0 0 60px rgba(255, 122, 26, 0.55), inset 0 -10px 30px rgba(60, 0, 0, 0.55);
+  text-shadow: 0 3px 0 rgba(90, 20, 0, 0.7);
+  transition: transform 0.12s ease;
+}
+.roar-btn:hover { transform: scale(1.04); }
+.roar-btn:active { transform: scale(0.94); }
+.count { margin: 0; font: 700 18px/1.3 var(--font-label); letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-dim); }
+.count b { color: var(--gold); font: 400 30px/1 var(--font-display); letter-spacing: 0; font-variant-numeric: tabular-nums; margin-left: 6px; }
+
+footer { max-width: 1100px; margin-inline: auto; padding-block: 60px calc(80px + env(safe-area-inset-bottom, 0px)); display: flex; flex-direction: column; gap: 12px; }
+.jai { font: 800 clamp(34px, 7vw, 64px)/1.2 var(--font-telugu); color: var(--gold); text-shadow: 0 0 30px rgba(255, 122, 26, 0.5); }
+.fine { margin: 0; color: var(--ink-dim); font-size: 15px; max-width: 60ch; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .card, .roar-btn { transition: none; }
+}
+</style>
+
+<canvas id="gl" aria-hidden="true"></canvas>
+<div id="flash" aria-hidden="true"></div>
+
+<div id="intro">
+  <div class="kicker" id="kicker">Something loud is coming</div>
+  <button class="skip" id="skip" type="button">Skip intro</button>
+  <button class="enter" id="enter" type="button">Enter the roar</button>
+</div>
+
+<header class="bar">
+  <a class="mark" href="#top">Gautham</a>
+  <nav aria-label="Sections">
+    <a href="#rules">Rules</a>
+    <a href="#moments">Moments</a>
+    <a class="keep" href="#roar">Roar</a>
+  </nav>
+</header>
+
+<main>
+  <section class="hero" id="top">
+    <h1 class="name-h1">Gautham</h1>
+    <div class="hero-copy">
+      <p class="eyebrow">Mass is a mindset</p>
+      <p class="lede">Gautham runs on Balayya energy. Loud entries, slow strides, and a roar that gets the whole room whistling.</p>
+      <a class="cue" href="#rules">Scroll into the tunnel</a>
+    </div>
+  </section>
+
+  <section class="block" id="rules">
+    <div class="panel">
+      <h2>Rules of the roar</h2>
+      <p class="sub">Three house rules, straight from the front-row stalls.</p>
+      <div class="rules">
+        <div>
+          <h3>Enter like thunder</h3>
+          <p>Every room deserves a proper entrance. Doors swing open, heads turn, and the background score starts playing in everyone's head.</p>
+        </div>
+        <div>
+          <h3>Keep the walk slow</h3>
+          <p>Slow motion is a lifestyle. Nobody hurries when the whole street is watching, and the coat always lands just right.</p>
+        </div>
+        <div>
+          <h3>Share the roar</h3>
+          <p>Mass means everybody is invited. A whistle is louder when the whole theatre blows it together.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="moments">
+    <div class="panel moments-head">
+      <h2>Mass moments</h2>
+      <p class="sub" style="margin:0">Four scenes every fan knows by heart. Hover or touch a card to tilt it.</p>
+    </div>
+    <div class="cards">
+      <article class="card">
+        <span class="tag">Scene one</span>
+        <h3>First day first show</h3>
+        <p>A dawn queue, garlands on the cutout, and a theatre already shaking before the title card.</p>
+        <div class="meter"><span>Whistle level</span><span>Theatre-shaking</span></div>
+      </article>
+      <article class="card">
+        <span class="tag">Scene two</span>
+        <h3>Thunder entry</h3>
+        <p>Wind, dust, a jeep, and a silhouette against the sun. Then the cut to the whistles.</p>
+        <div class="meter"><span>Whistle level</span><span>Street-wide</span></div>
+      </article>
+      <article class="card">
+        <span class="tag">Scene three</span>
+        <h3>Slow-motion stride</h3>
+        <p>One step takes eight seconds on screen and ends the villain's whole plan.</p>
+        <div class="meter"><span>Whistle level</span><span>Slow burn</span></div>
+      </article>
+      <article class="card">
+        <span class="tag">Scene four</span>
+        <h3>The big dialogue</h3>
+        <p>Delivered in a single breath, echoed by the hall, and quoted for years afterwards.</p>
+        <div class="meter"><span>Whistle level</span><span>Echoing</span></div>
+      </article>
+    </div>
+  </section>
+
+  <section class="block" id="roar">
+    <div class="panel roar-grid">
+      <div>
+        <h2>Give it a roar</h2>
+        <p class="sub" style="margin:0">Hit the button for thunder, lightning, and one more Jai Balayya on your count. Turn the sound up.</p>
+      </div>
+      <div class="roar-side">
+        <button class="roar-btn" id="roarBtn" type="button">ROAR</button>
+        <p class="count" aria-live="polite">Roars from this browser <b id="roarCount">0</b></p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="jai" lang="te">జై బాలయ్య</div>
+  <p class="fine">An unofficial fan tribute made for Gautham, in the spirit of Balayya mass. Not affiliated with any film, studio or artist.</p>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function () {
+  'use strict';
+  var root = document.documentElement;
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var introEl = document.getElementById('intro');
+  var flashEl = document.getElementById('flash');
+  var kicker = document.getElementById('kicker');
+  var enterBtn = document.getElementById('enter');
+  var skipBtn = document.getElementById('skip');
+  var fx = { roar: function () {} };
+  window.__gx = 1;
+
+  /* ---------- shared helpers (work with or without WebGL) ---------- */
+  var fv = 0, fRunning = false;
+  function flash(v) {
+    fv = Math.max(fv, v);
+    if (!fRunning) { fRunning = true; requestAnimationFrame(tickFlash); }
+  }
+  function tickFlash() {
+    fv -= 0.04;
+    if (fv <= 0) { fv = 0; fRunning = false; }
+    flashEl.style.opacity = fv;
+    if (fRunning) requestAnimationFrame(tickFlash);
+  }
+
+  var ac = null;
+  function thunder() {
+    try {
+      ac = ac || new (window.AudioContext || window.webkitAudioContext)();
+      if (ac.state === 'suspended') ac.resume();
+      var t = ac.currentTime, len = Math.floor(ac.sampleRate * 1.8);
+      var buf = ac.createBuffer(1, len, ac.sampleRate), d = buf.getChannelData(0);
+      for (var i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 2.2);
+      var src = ac.createBufferSource(); src.buffer = buf;
+      var f = ac.createBiquadFilter(); f.type = 'lowpass';
+      f.frequency.setValueAtTime(900, t); f.frequency.exponentialRampToValueAtTime(90, t + 1.5);
+      var g = ac.createGain(); g.gain.value = 0.9;
+      src.connect(f); f.connect(g); g.connect(ac.destination); src.start(t);
+      var o = ac.createOscillator(); o.type = 'sine';
+      o.frequency.setValueAtTime(70, t); o.frequency.exponentialRampToValueAtTime(28, t + 1.2);
+      var og = ac.createGain(); og.gain.setValueAtTime(0.7, t); og.gain.exponentialRampToValueAtTime(0.001, t + 1.3);
+      o.connect(og); og.connect(ac.destination); o.start(t); o.stop(t + 1.4);
+    } catch (e) {}
+  }
+
+  function initUI() {
+    // tilt cards
+    if (!reduce) {
+      document.querySelectorAll('.card').forEach(function (el) {
+        el.addEventListener('pointermove', function (e) {
+          var r = el.getBoundingClientRect();
+          var x = (e.clientX - r.left) / r.width - 0.5, y = (e.clientY - r.top) / r.height - 0.5;
+          el.style.setProperty('--ry', (x * 14) + 'deg');
+          el.style.setProperty('--rx', (-y * 14) + 'deg');
+        });
+        el.addEventListener('pointerleave', function () {
+          el.style.setProperty('--ry', '0deg'); el.style.setProperty('--rx', '0deg');
+        });
+      });
+    }
+    // roar counter
+    var countEl = document.getElementById('roarCount'), n = 0;
+    try { n = parseInt(localStorage.getItem('gautham-roars') || '0', 10) || 0; } catch (e) {}
+    countEl.textContent = n;
+    document.getElementById('roarBtn').addEventListener('click', function () {
+      n += 1; countEl.textContent = n;
+      try { localStorage.setItem('gautham-roars', String(n)); } catch (e) {}
+      flash(0.7); thunder(); fx.roar();
+    });
+  }
+
+  function fallback() {
+    root.classList.remove('intro');
+    root.classList.add('nogl');
+  }
+
+  initUI();
+
+  if (!window.THREE) { fallback(); return; }
+  var canvas = document.getElementById('gl');
+  var renderer;
+  try {
+    renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
+  } catch (e) { fallback(); return; }
+
+  /* ---------- scene ---------- */
+  var REST = 10.5, T1 = 3.4;
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
+  renderer.setClearColor(0x0a0605, 1);
+  var scene = new THREE.Scene();
+  scene.fog = new THREE.FogExp2(0x0a0605, 0.022);
+  var camera = new THREE.PerspectiveCamera(55, 1, 0.1, 400);
+  scene.add(camera);
+  var lamp = new THREE.PointLight(0xffa24a, 1.8, 34, 1.4);
+  lamp.position.set(0, 0.5, -1);
+  camera.add(lamp);
+  scene.add(new THREE.AmbientLight(0x3a1c10, 1.2));
+
+  function glowSprite() {
+    var c = document.createElement('canvas'); c.width = c.height = 64;
+    var g = c.getContext('2d'), gr = g.createRadialGradient(32, 32, 0, 32, 32, 32);
+    gr.addColorStop(0, 'rgba(255,240,200,1)'); gr.addColorStop(0.25, 'rgba(255,170,60,0.8)'); gr.addColorStop(1, 'rgba(255,100,20,0)');
+    g.fillStyle = gr; g.fillRect(0, 0, 64, 64);
+    return new THREE.CanvasTexture(c);
+  }
+
+  // tunnel rings
+  var ringGroups = [], ringSpin = [];
+  (function () {
+    for (var i = 0; i < 46; i++) {
+      var big = i % 3 === 0, grp = new THREE.Group();
+      grp.position.z = 40 - i * 4;
+      var col = big ? 0xf2b53a : (i % 2 ? 0xb3121f : 0xff7a1a);
+      var torus = new THREE.Mesh(new THREE.TorusGeometry(big ? 8.4 : 8.0, big ? 0.09 : 0.04, 6, 96), new THREE.MeshBasicMaterial({ color: col }));
+      grp.add(torus);
+      if (big) {
+        var arcMat = new THREE.MeshBasicMaterial({ color: i % 2 ? 0xff7a1a : 0xb3121f, transparent: true, opacity: 0.55, side: THREE.DoubleSide, depthWrite: false });
+        for (var k = 0; k < 3; k++) {
+          var arc = new THREE.Mesh(new THREE.RingGeometry(7.1, 8.1, 40, 1, 0, Math.PI * 0.36), arcMat);
+          arc.rotation.z = k * Math.PI * 2 / 3;
+          grp.add(arc);
+        }
+      }
+      scene.add(grp); ringGroups.push(grp);
+      ringSpin.push((i % 2 ? 1 : -1) * (0.15 + (i % 5) * 0.05));
+    }
+  })();
+
+  // gold shards
+  var shards = [];
+  (function () {
+    var geo = new THREE.OctahedronGeometry(1, 0);
+    var mat = new THREE.MeshPhongMaterial({ color: 0xf2b53a, specular: 0xfff0b0, shininess: 90, flatShading: true, emissive: 0x2a1204 });
+    for (var i = 0; i < 44; i++) {
+      var m = new THREE.Mesh(geo, mat), a = Math.random() * Math.PI * 2, r = 3.2 + Math.random() * 4.2, s = 0.25 + Math.random() * 0.5;
+      m.position.set(Math.cos(a) * r, Math.sin(a) * r, 24 - Math.random() * 164);
+      m.scale.set(s, s * (1.2 + Math.random()), s);
+      m.userData.spin = [Math.random() - 0.5, Math.random() - 0.5];
+      scene.add(m); shards.push(m);
+    }
+  })();
+
+  // sun at the end of the tunnel
+  (function () {
+    var c = document.createElement('canvas'); c.width = c.height = 256;
+    var g = c.getContext('2d'), gr = g.createRadialGradient(128, 128, 0, 128, 128, 128);
+    gr.addColorStop(0, 'rgba(255,241,194,1)'); gr.addColorStop(0.16, 'rgba(255,179,71,0.95)');
+    gr.addColorStop(0.45, 'rgba(255,100,20,0.5)'); gr.addColorStop(1, 'rgba(179,18,31,0)');
+    g.fillStyle = gr; g.fillRect(0, 0, 256, 256);
+    var sun = new THREE.Mesh(new THREE.PlaneGeometry(96, 96), new THREE.MeshBasicMaterial({
+      map: new THREE.CanvasTexture(c), transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, fog: false
+    }));
+    sun.position.set(0, 0, -154);
+    scene.add(sun);
+  })();
+
+  // sparks
+  var N = 1400, sPos = new Float32Array(N * 3), sCol = new Float32Array(N * 3), sSpd = new Float32Array(N);
+  (function () {
+    for (var i = 0; i < N; i++) {
+      var a = Math.random() * Math.PI * 2, r = 1.2 + Math.random() * 7;
+      sPos[i * 3] = Math.cos(a) * r; sPos[i * 3 + 1] = Math.sin(a) * r; sPos[i * 3 + 2] = 46 - Math.random() * 70;
+      sSpd[i] = 0.6 + Math.random() * 1.4;
+      var t = Math.random();
+      sCol[i * 3] = 1; sCol[i * 3 + 1] = 0.55 + t * 0.4; sCol[i * 3 + 2] = 0.15 + t * 0.5;
+    }
+  })();
+  var sGeo = new THREE.BufferGeometry();
+  sGeo.setAttribute('position', new THREE.BufferAttribute(sPos, 3));
+  sGeo.setAttribute('color', new THREE.BufferAttribute(sCol, 3));
+  var sparks = new THREE.Points(sGeo, new THREE.PointsMaterial({
+    size: 0.2, map: glowSprite(), vertexColors: true, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, fog: false
+  }));
+  sparks.frustumCulled = false;
+  scene.add(sparks);
+
+  // shockwave
+  var shock = new THREE.Mesh(new THREE.RingGeometry(0.92, 1, 128), new THREE.MeshBasicMaterial({
+    color: 0xffd27a, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, side: THREE.DoubleSide, depthWrite: false, fog: false
+  }));
+  shock.position.set(0, 0.6, 1); shock.visible = false; scene.add(shock);
+  var shockT = 99;
+
+  // lightning
+  var bolts = [];
+  function bolt() {
+    var x = (Math.random() - 0.5) * 16, z = camera.position.z - 14 - Math.random() * 22, pts = [];
+    for (var i = 0; i <= 14; i++) { x += (Math.random() - 0.5) * 2.4; pts.push(new THREE.Vector3(x, 12 - i * (22 / 14), z)); }
+    var geo = new THREE.BufferGeometry().setFromPoints(pts);
+    for (var k = 0; k < 3; k++) {
+      var m = new THREE.LineBasicMaterial({ color: k ? 0xffb347 : 0xfff6d8, transparent: true, opacity: 1, blending: THREE.AdditiveBlending, fog: false });
+      var l = new THREE.Line(geo, m); l.position.x = (k - 1) * 0.06;
+      scene.add(l); bolts.push({ l: l, m: m, life: 0.24, geo: geo });
+    }
+  }
+
+  /* ---------- name, built after the fonts arrive ---------- */
+  var nameGroup = new THREE.Group(), nameMesh = null, teluguMesh = null;
+  nameGroup.position.y = 0.6; nameGroup.visible = false; scene.add(nameGroup);
+
+  function nameTexture(kind) {
+    var c = document.createElement('canvas'); c.width = 2048; c.height = 512;
+    var g = c.getContext('2d'), size = 380, label = 'GAUTHAM';
+    g.textAlign = 'center'; g.textBaseline = 'middle'; g.lineJoin = 'round';
+    g.font = size + 'px "Alfa Slab One", Georgia, serif';
+    size = Math.floor(size * Math.min(1, 1880 / g.measureText(label).width));
+    g.font = size + 'px "Alfa Slab One", Georgia, serif';
+    var cy = 270;
+    if (kind === 'gold') {
+      var gr = g.createLinearGradient(0, 100, 0, 440);
+      gr.addColorStop(0, '#fff6cc'); gr.addColorStop(0.35, '#f7c648'); gr.addColorStop(0.68, '#c8841a'); gr.addColorStop(1, '#7a3b0a');
+      g.lineWidth = 16; g.strokeStyle = '#3a1204'; g.strokeText(label, 1024, cy);
+      g.fillStyle = gr; g.fillText(label, 1024, cy);
+    } else if (kind === 'depth') {
+      g.lineWidth = 16; g.strokeStyle = '#fff'; g.strokeText(label, 1024, cy);
+      g.fillStyle = '#fff'; g.fillText(label, 1024, cy);
+    } else {
+      g.shadowColor = '#ff7a1a'; g.shadowBlur = 80; g.fillStyle = '#ff7a1a';
+      g.fillText(label, 1024, cy); g.fillText(label, 1024, cy); g.fillText(label, 1024, cy);
+    }
+    var t = new THREE.CanvasTexture(c); t.anisotropy = renderer.capabilities.getMaxAnisotropy(); return t;
+  }
+  function teluguTexture() {
+    var c = document.createElement('canvas'); c.width = 1024; c.height = 256;
+    var g = c.getContext('2d'), size = 170, text = 'జై బాలయ్య';
+    g.textAlign = 'center'; g.textBaseline = 'middle'; g.lineJoin = 'round';
+    g.font = '800 ' + size + 'px "Noto Sans Telugu", "Nirmala UI", sans-serif';
+    size = Math.floor(size * Math.min(1, 900 / g.measureText(text).width));
+    g.font = '800 ' + size + 'px "Noto Sans Telugu", "Nirmala UI", sans-serif';
+    var gr = g.createLinearGradient(0, 40, 0, 220);
+    gr.addColorStop(0, '#ffb347'); gr.addColorStop(1, '#ff7a1a');
+    g.lineWidth = 10; g.strokeStyle = '#2a0c04'; g.strokeText(text, 512, 132);
+    g.fillStyle = gr; g.fillText(text, 512, 132);
+    var t = new THREE.CanvasTexture(c); t.anisotropy = 4; return t;
+  }
+  function buildName() {
+    var depthTex = nameTexture('depth'), goldTex = nameTexture('gold'), glowTex = nameTexture('glow');
+    var plane = new THREE.PlaneGeometry(12, 3), cA = new THREE.Color(0x8a1a0e), cB = new THREE.Color(0x140605);
+    var glow = new THREE.Mesh(plane, new THREE.MeshBasicMaterial({ map: glowTex, transparent: true, opacity: 0.8, blending: THREE.AdditiveBlending, depthWrite: false }));
+    glow.position.z = -0.95; glow.scale.setScalar(1.12); nameGroup.add(glow);
+    for (var k = 15; k >= 0; k--) {
+      var m = new THREE.Mesh(plane, new THREE.MeshBasicMaterial({ map: depthTex, transparent: true, depthWrite: false, color: new THREE.Color().lerpColors(cA, cB, k / 15) }));
+      m.position.z = -k * 0.05; nameGroup.add(m);
+    }
+    nameMesh = new THREE.Mesh(plane, new THREE.MeshBasicMaterial({ map: goldTex, transparent: true, depthWrite: false }));
+    nameMesh.position.z = 0.06; nameGroup.add(nameMesh);
+    teluguMesh = new THREE.Mesh(new THREE.PlaneGeometry(6, 1.5), new THREE.MeshBasicMaterial({ map: teluguTexture(), transparent: true, opacity: 0, depthWrite: false }));
+    teluguMesh.position.set(0, -2.45, 0.1); nameGroup.add(teluguMesh);
+  }
+
+  /* ---------- state ---------- */
+  var mode = 'wait', it = 0, time = 0, popped = false, popT = 99, shk = 0;
+  var mx = 0, my = 0, mxs = 0, mys = 0;
+  var base = { x: 0, y: 0, z: 36 };
+  var fit = 1;
+
+  function prog() {
+    var m = root.scrollHeight - innerHeight;
+    return m > 0 ? Math.min(1, Math.max(0, window.scrollY / m)) : 0;
+  }
+  function resize() {
+    var w = window.innerWidth, h = window.innerHeight;
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h; camera.updateProjectionMatrix();
+    var visH = 2 * REST * Math.tan(THREE.MathUtils.degToRad(27.5)), visW = visH * camera.aspect;
+    fit = Math.min(1, visW * 0.86 / 12);
+  }
+  window.addEventListener('resize', resize);
+  window.addEventListener('pointermove', function (e) {
+    mx = e.clientX / window.innerWidth * 2 - 1;
+    my = -(e.clientY / window.innerHeight * 2 - 1);
+  });
+
+  function pop() {
+    if (popped) return;
+    popped = true; popT = 0;
+    nameGroup.visible = true;
+    shock.visible = true; shockT = 0;
+    shk = 1; lamp.intensity = 8;
+    flash(1); bolt(); bolt();
+    setTimeout(bolt, 140);
+  }
+  function forcePop() {
+    popped = true; popT = 99; it = T1 + 3; shockT = 99; shock.visible = false;
+    nameGroup.visible = true; teluguMesh.material.opacity = 1; base.z = REST;
+  }
+  function enterSite() {
+    if (mode === 'site') return;
+    mode = 'site';
+    root.classList.remove('intro');
+    window.scrollTo(0, 0);
+  }
+
+  fx.roar = function () { shk = Math.max(shk, 0.7); lamp.intensity = 7; bolt(); };
+
+  enterBtn.addEventListener('click', function () { thunder(); flash(0.9); shk = 1; bolt(); enterSite(); });
+  skipBtn.addEventListener('click', function () { forcePop(); enterSite(); });
+
+  /* ---------- frame ---------- */
+  var clock = new THREE.Clock();
+  function update(dt) {
+    var kdt = Math.min(1, dt * 3), roll = 0, flow = 3;
+    mxs += (mx - mxs) * Math.min(1, dt * 4); mys += (my - mys) * Math.min(1, dt * 4);
+
+    if (mode === 'wait') { base.z = 36; flow = 14; }
+    else if (mode === 'intro') {
+      it += dt;
+      var k = Math.min(it / T1, 1), e = 1 - Math.pow(1 - k, 4);
+      base.z = 36 - (36 - REST) * e; roll = (1 - e) * 0.6; flow = 6 + 44 * (1 - e);
+      base.x += (mxs * 0.3 - base.x) * kdt; base.y += (mys * 0.2 - base.y) * kdt;
+      kicker.classList.toggle('on', it > 0.3 && it < 2.5);
+      if (it >= T1) pop();
+      if (teluguMesh && it > T1 + 0.8) teluguMesh.material.opacity = Math.min(1, (it - T1 - 0.8) / 0.8);
+      if (it > T1 + 1.7) introEl.classList.add('ready');
+    } else {
+      var p = prog(), tz = REST - p * 118;
+      flow = 3 + Math.min(40, Math.abs(tz - base.z) * 2.2);
+      base.z += (tz - base.z) * kdt;
+      base.x += ((Math.sin(p * 7) * 0.9 + mxs * 0.7) - base.x) * kdt;
+      base.y += ((Math.cos(p * 5) * 0.35 + mys * 0.4) - base.y) * kdt;
+      roll = Math.sin(p * 5) * 0.07;
+    }
+
+    shk = Math.max(0, shk - dt * 1.6);
+    camera.position.set(base.x + (Math.random() - 0.5) * shk * 0.5, base.y + (Math.random() - 0.5) * shk * 0.5, base.z);
+    camera.rotation.set(mys * 0.04, -mxs * 0.05, roll + (Math.random() - 0.5) * shk * 0.03);
+    lamp.intensity += (1.8 - lamp.intensity) * Math.min(1, dt * 4);
+
+    // name
+    if (popped) {
+      popT += dt;
+      var pp = Math.pow(Math.max(0, 1 - popT / 0.6), 2);
+      nameGroup.scale.setScalar(fit * (1 + 0.5 * pp));
+      nameGroup.rotation.y = Math.sin(time * 0.6) * 0.1 + mxs * 0.28;
+      nameGroup.rotation.x = -mys * 0.1;
+    }
+    if (shock.visible) {
+      shockT += dt;
+      shock.scale.setScalar(0.5 + shockT * 42);
+      shock.material.opacity = Math.max(0, 1 - shockT / 0.9) * 0.9;
+      if (shockT > 0.9) shock.visible = false;
+    }
+
+    // sparks
+    var zc = camera.position.z, sp = reduce ? 0.3 : 1;
+    for (var i = 0; i < N; i++) {
+      var o = i * 3;
+      sPos[o + 2] += flow * sSpd[i] * dt * sp;
+      sPos[o + 1] += 0.35 * sSpd[i] * dt * sp;
+      if (sPos[o + 1] > 9) sPos[o + 1] = -9;
+      if (sPos[o + 2] > zc + 8) sPos[o + 2] -= 70;
+      else if (sPos[o + 2] < zc - 62) sPos[o + 2] += 70;
+    }
+    sGeo.attributes.position.needsUpdate = true;
+
+    // rings and shards
+    for (var r = 0; r < ringGroups.length; r++) ringGroups[r].rotation.z += ringSpin[r] * dt * sp;
+    for (var s = 0; s < shards.length; s++) {
+      var sh = shards[s]; sh.rotation.x += sh.userData.spin[0] * dt; sh.rotation.y += sh.userData.spin[1] * dt;
+    }
+
+    // bolts
+    for (var b = bolts.length - 1; b >= 0; b--) {
+      var bo = bolts[b]; bo.life -= dt;
+      bo.m.opacity = Math.max(0, bo.life / 0.24) * (0.6 + Math.random() * 0.4);
+      if (bo.life <= 0) { scene.remove(bo.l); bo.m.dispose(); bolts.splice(b, 1); }
+    }
+  }
+  function frame() {
+    requestAnimationFrame(frame);
+    var dt = Math.min(clock.getDelta(), 0.05);
+    time += dt; update(dt);
+    renderer.render(scene, camera);
+  }
+
+  /* ---------- go ---------- */
+  resize();
+  var fontsReady = Promise.race([
+    Promise.all([
+      document.fonts.load('120px "Alfa Slab One"', 'GAUTHAM'),
+      document.fonts.load('800 120px "Noto Sans Telugu"', 'జై బాలయ్య')
+    ]),
+    new Promise(function (res) { setTimeout(res, 2500); })
+  ]).catch(function () {});
+
+  fontsReady.then(function () {
+    buildName();
+    if (reduce) { forcePop(); enterSite(); }
+    else { mode = 'intro'; kicker.classList.add('on'); }
+    clock.getDelta();
+    frame();
+  });
+  kicker.classList.add('on');
+})();
+</script>
+
+</body></html>
